@@ -1,0 +1,1 @@
+# Some Modifications on QuickAd
