@@ -1,0 +1,8 @@
+[27-Jun-2019 03:22:39 America/Chicago] PHP Warning:  unlink(../../storage/products/): Is a directory in /home1/hitlanka/public_html/plugins/orakuploader/orakuploader.php on line 15
+[27-Jun-2019 03:22:39 America/Chicago] PHP Warning:  unlink(../../storage/products/thumb/): Is a directory in /home1/hitlanka/public_html/plugins/orakuploader/orakuploader.php on line 16
+[27-Jun-2019 03:22:39 America/Chicago] PHP Warning:  unlink(../../storage/products/cache/): Is a directory in /home1/hitlanka/public_html/plugins/orakuploader/orakuploader.php on line 17
+[27-Jun-2019 03:22:39 America/Chicago] PHP Warning:  unlink(../../storage/products/thumb/cache/): Is a directory in /home1/hitlanka/public_html/plugins/orakuploader/orakuploader.php on line 18
+[28-Jun-2019 05:49:07 America/Chicago] PHP Warning:  unlink(../../storage/products/): Is a directory in /home1/hitlanka/public_html/plugins/orakuploader/orakuploader.php on line 15
+[28-Jun-2019 05:49:07 America/Chicago] PHP Warning:  unlink(../../storage/products/thumb/): Is a directory in /home1/hitlanka/public_html/plugins/orakuploader/orakuploader.php on line 16
+[28-Jun-2019 05:49:07 America/Chicago] PHP Warning:  unlink(../../storage/products/cache/): Is a directory in /home1/hitlanka/public_html/plugins/orakuploader/orakuploader.php on line 17
+[28-Jun-2019 05:49:07 America/Chicago] PHP Warning:  unlink(../../storage/products/thumb/cache/): Is a directory in /home1/hitlanka/public_html/plugins/orakuploader/orakuploader.php on line 18
