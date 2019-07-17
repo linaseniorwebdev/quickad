@@ -94,7 +94,57 @@ jQuery(function($) {
                 $data = response.split(',');
                 $name = $data[0];
                 $id = $data[1];
-                var appendtpl = '<div class="panel panel-default quickad-js-collapse" data-service-id="'+$id+'"> <div class="panel-heading" role="tab" id="s_'+$id+'"> <div class="row"> <div class="col-sm-8 col-xs-10"> <div class="quickad-flexbox"> <div class="quickad-flex-cell quickad-vertical-middle" style="width: 1%"> <i class="quickad-js-handle quickad-icon quickad-icon-draghandle quickad-margin-right-sm quickad-cursor-move ui-sortable-handle hide" title="Reorder"></i> </div> <div class="quickad-flex-cell quickad-vertical-middle"> <a role="button" class="panel-title collapsed quickad-js-service-title" data-toggle="collapse" data-parent="#services_list"  href="#service_'+$id+'" aria-expanded="false" aria-controls="service_'+$id+'">'+$name+' </a> </div> </div> </div> <div class="col-sm-4 col-xs-2"> <div class="quickad-flexbox"> <div class="quickad-flex-cell quickad-vertical-middle text-right" style="width: 10%"><div class="checkbox checkbox-success"> <input id="checkbox'+$id+'" type="checkbox" class="service-checker" value="'+$id+'"> <label for="checkbox'+$id+'"></label></div></div> </div> </div> </div> </div> <div id="service_'+$id+'" class="panel-collapse collapse" role="tabpanel"style="height: 0"> <div class="panel-body"> <form method="post" id="'+$id+'"> <div class="row"> <div class="col-md-12 col-sm-6"> <div class="form-group"> <label for="title_'+$id+'">Title</label> <input name="title" value="'+$name+'" id="title_'+$id+'" class="form-control" type="text"> <input name="id" value="'+$id+'" type="hidden"> </div> </div> </div> <div class="panel-footer"> <button type="button" class="btn btn-lg btn-warning quickad-cat-lang-edit" data-category-id="'+$id+'" data-category-type="sub"> <span class="ladda-label"><i class="fa fa-language"></i> Edit Language</span></button><button type="button" class="btn btn-lg btn-success ladda-button ajax-subcat-edit" data-style="zoom-in" data-spinner-size="40" onclick="editSubCat('+$id+');"><span class="ladda-label">Save</span></button> <button class="btn btn-lg btn-default js-reset" type="reset">Reset </button> </div> </form> </div> </div> </div>';
+                var appendtpl = '' +
+                    '<div class="panel panel-default quickad-js-collapse" data-service-id="' + $id + '">' +
+                        '<div class="panel-heading" role="tab" id="s_' + $id + '">' +
+                            '<div class="row">' +
+                                '<div class="col-sm-8 col-xs-10">' +
+                                    '<div class="quickad-flexbox">' +
+                                        '<div class="quickad-flex-cell quickad-vertical-middle" style="width: 1%">' +
+                                            '<i class="quickad-js-handle quickad-icon quickad-icon-draghandle quickad-margin-right-sm quickad-cursor-move ui-sortable-handle hide" title="Reorder"></i>' +
+                                        '</div>' +
+                                        '<div class="quickad-flex-cell quickad-vertical-middle">' +
+                                            '<a role="button" class="panel-title collapsed quickad-js-service-title" data-toggle="collapse" data-parent="#services_list"  href="#service_' + $id + '" aria-expanded="false" aria-controls="service_' + $id + '">' + $name + ' </a>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="col-sm-4 col-xs-2">' +
+                                    '<div class="quickad-flexbox">' +
+                                        '<div class="quickad-flex-cell quickad-vertical-middle text-right" style="width: 10%">' +
+                                            '<div class="checkbox checkbox-success">' +
+                                                '<input id="checkbox' + $id + '" type="checkbox" class="service-checker" value="' + $id + '">' +
+                                                '<label for="checkbox' + $id + '"></label>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div id="service_' + $id + '" class="panel-collapse collapse" role="tabpanel" style="height: 0">' +
+                            '<div class="panel-body">' +
+                                '<form method="post" id="' + $id + '">' +
+                                    '<div class="row">' +
+                                        '<div class="col-md-12 col-sm-6">' +
+                                            '<div class="form-group">' +
+                                                '<label for="title_' + $id + '">Title</label>' +
+                                                '<input name="title" value="' + $name + '" id="title_' + $id + '" class="form-control" type="text" />' +
+                                                '<input name="id" value="' + $id + '" type="hidden" />' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<div class="panel-footer">' +
+                                        '<button type="button" class="btn btn-lg btn-warning quickad-cat-lang-edit" data-category-id="' + $id + '" data-category-type="sub">' +
+                                            '<span class="ladda-label"><i class="fa fa-language"></i> Edit Language</span>' +
+                                        '</button>' +
+                                        '<button type="button" class="btn btn-lg btn-success ladda-button ajax-subcat-edit" data-style="zoom-in" data-spinner-size="40" onclick="editSubCat(' + $id + ');">' +
+                                            '<span class="ladda-label">Save</span>' +
+                                        '</button>' +
+                                        '<button class="btn btn-lg btn-default js-reset" type="reset">Reset </button>' +
+                                    '</div>' +
+                                '</form>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
                 $('#services_list').append(appendtpl);
                 quickadAlert({success: ['Successfully created.']});
                 $('#new-subcategory-form .confirm').removeClass('bookme-progress');
@@ -108,8 +158,6 @@ jQuery(function($) {
         });
         return false;
     });
-
-
 
     // Categories list delegated events.
     $(document)
@@ -249,35 +297,35 @@ jQuery(function($) {
 
     // Services list delegated events.
     $('#quickad-services-wrapper').on('click', '#quickad-delete', function(e) {
-            if (confirm('Are you sure?')) {
-                $('#quickad-delete').addClass('bookme-progress');
-                var $for_delete = $('.service-checker:checked'),
-                    data = { action: 'delSubCat' },
-                    services = [],
-                    $panels = [];
+        if (confirm('Are you sure?')) {
+            $('#quickad-delete').addClass('bookme-progress');
+            var $for_delete = $('.service-checker:checked'),
+                data = { action: 'delSubCat' },
+                services = [],
+                $panels = [];
 
-                $for_delete.each(function(){
-                    var panel = $(this).parents('.quickad-js-collapse');
-                    $panels.push(panel);
-                    services.push(this.value);
-                });
-                data['subCatids[]'] = services;
-                $.post(ajaxurl+'?action=delSubCat', data, function(response) {
-                    if(response != 0) {
-                        $.each($panels.reverse(), function (index) {
-                            $(this).delay(500 * index).fadeOut(200, function () {
-                                $(this).remove();
-                            });
+            $for_delete.each(function(){
+                var panel = $(this).parents('.quickad-js-collapse');
+                $panels.push(panel);
+                services.push(this.value);
+            });
+            data['subCatids[]'] = services;
+            $.post(ajaxurl+'?action=delSubCat', data, function(response) {
+                if(response != 0) {
+                    $.each($panels.reverse(), function (index) {
+                        $(this).delay(500 * index).fadeOut(200, function () {
+                            $(this).remove();
                         });
-                        $('#quickad-delete').removeClass('bookme-progress');
-                        quickadAlert({success: ['Successfully deleted.']});
-                    }else{
-                        $('#quickad-delete').removeClass('bookme-progress');
-                        quickadAlert({error: ['Problem in deleting, Please try again.']});
-                    }
-                });
-            }
-        });
+                    });
+                    $('#quickad-delete').removeClass('bookme-progress');
+                    quickadAlert({success: ['Successfully deleted.']});
+                }else{
+                    $('#quickad-delete').removeClass('bookme-progress');
+                    quickadAlert({error: ['Problem in deleting, Please try again.']});
+                }
+            });
+        }
+    });
 
 
     var $category = $('#quickad-category-item-list');

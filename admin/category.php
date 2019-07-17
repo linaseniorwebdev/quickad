@@ -119,8 +119,6 @@ require_once('includes.php');
                                                                     <a href="#" class="fa fa-pencil-square-o quickad-margin-horizontal-xs quickad-js-edit" title="Edit"></a>
                                                                 </div>
                                                                 <div class="quickad-flex-cell quickad-vertical-middle" style="width: 1%;font-size: 18px;">
-                                                                    <!--<a href="#" class="fa fa-trash-o text-danger quickad-js-delete"
-                                                                       title="Delete"></a>-->
                                                                     <button type="button" class="text-danger quickad-js-delete" style="border:none;background:  transparent;"><i class="fa fa-trash-o"></i></button>
                                                                 </div>
                                                             </div>

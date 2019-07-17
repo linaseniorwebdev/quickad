@@ -1915,14 +1915,15 @@ function editSubCat()
     $photo_show = $_GET['photo_show'];
     $price_show = $_GET['price_show'];
     $picture = $_GET['picture'];
+    $description = $_GET['description'];
     if (trim($name) != '' && is_string($name) && trim($id) != '') {
+        if($slug == "") {
+	        $slug = create_category_slug($name);
+        } else {
+	        $slug = create_category_slug($slug);
+        }
 
-        if($slug == "")
-            $slug = create_category_slug($name);
-        else
-            $slug = create_category_slug($slug);
-
-        $query = "UPDATE `".$config['db']['pre']."catagory_sub` SET `sub_cat_name` = '".$name."',`slug` = '".$slug."', `picture` = '".$picture."', `photo_show` = '".$photo_show."', `price_show` = '".$price_show."' WHERE `sub_cat_id` = '" . $id . "'";
+        $query = "UPDATE `" . $config['db']['pre'] . "catagory_sub` SET `sub_cat_name` = '" . $name . "',`slug` = '" . $slug . "', `picture` = '" . $picture . "', `photo_show` = '" . $photo_show . "', `price_show` = '" . $price_show . "', `description` = '" . $description . "' WHERE `sub_cat_id` = '" . $id . "'";
         if(check_allow()){
             $con->query($query);
 
@@ -2009,108 +2010,100 @@ function getSubCat()
             $price_show = $row['price_show'];
             $photo_hide_selected = ($photo_show == 0)? "selected" :  "";
             $price_hide_selected = ($price_show == 0)? "selected" :  "";
+            $description = $row['description'];
             $userlangselect = (get_option("userlangsel") == '1')? "show" :  "hidden";
 
-            $tags .= ' <div class="panel panel-default quickad-js-collapse" data-service-id="' . $sub_id . '">
-                                        <div class="panel-heading" role="tab" id="s_' . $sub_id . '">
-                                            <div class="row">
-                                                <div class="col-sm-8 col-xs-10">
-                                                    <div class="quickad-flexbox">
-                                                        <div class="quickad-flex-cell quickad-vertical-middle"
-                                                             style="width: 1%">
-                                                            <i class="quickad-js-handle quickad-icon quickad-icon-draghandle quickad-margin-right-sm quickad-cursor-move ui-sortable-handle"
-                                                               title="Reorder"></i>
-                                                        </div>
-                                                        <div class="quickad-flex-cell quickad-vertical-middle">
-                                                            <a role="button"
-                                                               class="panel-title collapsed quickad-js-service-title"
-                                                               data-toggle="collapse" data-parent="#services_list"
-                                                               href="#service_' . $sub_id . '" aria-expanded="false"
-                                                               aria-controls="service_' . $sub_id . '">
-                                                                '.$name.' </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-4 col-xs-2">
-                                                    <div class="quickad-flexbox">
-                                                        <div class="quickad-flex-cell quickad-vertical-middle text-right"
-                                                             style="width: 10%">
-                                                            <label class="css-input css-checkbox css-checkbox-default m-t-0 m-b-0">
-                                                                <input type="checkbox" id="checkbox'.$sub_id.'" name="check-all" value="'.$sub_id.'"  class="service-checker"><span></span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+            $tags .=
+	            '<div class="panel panel-default quickad-js-collapse" data-service-id="' . $sub_id . '">
+                    <div class="panel-heading" role="tab" id="s_' . $sub_id . '">
+                        <div class="row">
+                            <div class="col-sm-8 col-xs-10">
+                                <div class="quickad-flexbox">
+                                    <div class="quickad-flex-cell quickad-vertical-middle"
+                                         style="width: 1%">
+                                        <i class="quickad-js-handle quickad-icon quickad-icon-draghandle quickad-margin-right-sm quickad-cursor-move ui-sortable-handle" title="Reorder"></i>
+                                    </div>
+                                    <div class="quickad-flex-cell quickad-vertical-middle">
+                                        <a role="button" class="panel-title collapsed quickad-js-service-title" data-toggle="collapse" data-parent="#services_list" href="#service_' . $sub_id . '" aria-expanded="false" aria-controls="service_' . $sub_id . '">' . $name . ' </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-xs-2">
+                                <div class="quickad-flexbox">
+                                    <div class="quickad-flex-cell quickad-vertical-middle text-right"
+                                         style="width: 10%">
+                                        <label class="css-input css-checkbox css-checkbox-default m-t-0 m-b-0">
+                                            <input type="checkbox" id="checkbox' . $sub_id . '" name="check-all" value="' . $sub_id . '"  class="service-checker"><span></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="service_' . $sub_id . '" class="panel-collapse collapse" role="tabpanel"
+                         style="height: 0">
+                        <div class="panel-body">
+                            <form method="post" id="' . $sub_id . '">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="title_' . $sub_id . '">Title</label>
+                                            <input name="title" value="' . $name . '" id="title_' . $sub_id . '" class="form-control" type="text">
                                         </div>
-
-                                        <div id="service_' . $sub_id . '" class="panel-collapse collapse" role="tabpanel"
-                                             style="height: 0">
-                                            <div class="panel-body">
-                                                <form method="post" id="' . $sub_id . '">
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                <label for="title_' . $sub_id . '">Title</label>
-                                                                <input name="title" value="'.$name.'" id="title_' . $sub_id . '"
-                                                                       class="form-control" type="text">
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                <label for="slug_' . $sub_id . '">Slug</label>
-                                                                <input name="slug" value="'.$slug.'" id="slug_' . $sub_id . '"
-                                                                       class="form-control" type="text">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                <label for="photo_' . $sub_id . '">Photo field Enable/Disable</label>
-                                                                <select name="photo_show" class="form-control">
-                                                                   <option value="1">Enable</option>
-                                                                    <option value="0" '.$photo_hide_selected.'>Disable</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                <label for="price_' . $sub_id . '">Price Enable/Disable</label>
-                                                                <select name="price_show" class="form-control">
-                                                                    <option value="1">Enable</option>
-                                                                    <option value="0" '.$price_hide_selected.'>Disable</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12">
-                                                            <div class="form-group">
-                                                                <label for="picture_' . $sub_id . '">Icon Image Url</label>
-                                                                <input name="picture" value="'.$picture.'" id="picture_' . $sub_id . '" class="form-control" type="text">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="panel-footer">
-                                                    <input name="id" value="' . $sub_id . '" type="hidden">
-                                                    <button type="button"
-                                                                class="'.$userlangselect.' btn btn-lg btn-warning quickad-cat-lang-edit" data-category-id="'.$sub_id.'" data-category-type="sub"> <span
-                                                                class="ladda-label"><i class="fa fa-language"></i> Edit Language</span></button>
-                                                        <button type="button"
-                                                                class="btn btn-lg btn-success ladda-button ajax-subcat-edit"
-                                                                data-style="zoom-in" data-spinner-size="40" onclick="editSubCat('.$sub_id.');"><span
-                                                                class="ladda-label">Save</span></button>
-                                                        <button class="btn btn-lg btn-default js-reset" type="reset">Reset
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="slug_' . $sub_id . '">Slug</label>
+                                            <input name="slug" value="'.$slug.'" id="slug_' . $sub_id . '" class="form-control" type="text">
                                         </div>
-                                    </div>';
-
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="photo_' . $sub_id . '">Photo field Enable/Disable</label>
+                                            <select name="photo_show" class="form-control">
+                                               <option value="1">Enable</option>
+                                                <option value="0" ' . $photo_hide_selected . '>Disable</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="price_' . $sub_id . '">Price Enable/Disable</label>
+                                            <select name="price_show" class="form-control">
+                                                <option value="1">Enable</option>
+                                                <option value="0" ' . $price_hide_selected . '>Disable</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="picture_' . $sub_id . '">Icon Image Url</label>
+                                            <input name="picture" value="' . $picture . '" id="picture_' . $sub_id . '" class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="description_' . $sub_id . '">Description</label>
+                                            <textarea name="description" id="description_' . $sub_id . '" class="form-control" style="resize: none;" rows="5">' . $description . '</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+	                                <input name="id" value="' . $sub_id . '" type="hidden">
+	                                <button type="button" class="' . $userlangselect . ' btn btn-lg btn-warning quickad-cat-lang-edit" data-category-id="' . $sub_id . '" data-category-type="sub"><span class="ladda-label"><i class="fa fa-language"></i> Edit Language</span></button>
+	                                <button type="button" class="btn btn-lg btn-success ladda-button ajax-subcat-edit" data-style="zoom-in" data-spinner-size="40" onclick="editSubCat('.$sub_id.');"><span class="ladda-label">Save</span></button>
+	                                <button class="btn btn-lg btn-default js-reset" type="reset">Reset</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>';
         }
 
         $tags .= '</div>';
